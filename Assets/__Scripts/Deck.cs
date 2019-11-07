@@ -7,10 +7,11 @@ public class Deck : MonoBehaviour {
     [Header("Set in Inspector")]
     public bool startFaceUp = false;
     // Suits
-    public Sprite suitClub;
-    public Sprite suitDiamond;
-    public Sprite suitHeart;
-    public Sprite suitSpade;
+    public Sprite suitRed;
+    public Sprite suitGreen;
+    public Sprite suitWhite;
+    public Sprite suitBlue;
+    public Sprite suitYellow;
     public Sprite[] faceSprites;
     public Sprite[] rankSprites;
     public Sprite cardBack;
@@ -43,10 +44,11 @@ public class Deck : MonoBehaviour {
         // Initialize the Dictionary of SuitSprites with necessary Sprites
         dictSuits = new Dictionary<string, Sprite>()
         {
-            {"C", suitClub},
-            {"D", suitDiamond},
-            {"H", suitHeart},
-            {"S", suitSpade}
+            {"R", suitRed},
+            {"G", suitGreen},
+            {"W", suitWhite},
+            {"B", suitBlue},
+            {"Y", suitYellow }
         };
 
         ReadDeck(deckXMLText);
@@ -62,12 +64,7 @@ public class Deck : MonoBehaviour {
 
         // This prints a test line to show you how xmlr can be used.
         // For more information read about XML in the Useful Concepts Appendix
-        string s = "xml[0] decorator[o]";
-        s += "type=" + xmlr.xml["xml"][0]["decorator"][0].att("type");
-        s += "x=" + xmlr.xml["xml"][0]["decorator"][0].att("x");
-        s += "y=" + xmlr.xml["xml"][0]["decorator"][0].att("y");
-        s += "scale=" + xmlr.xml["xml"][0]["decorator"][0].att("scale");
-        print(s);
+        
 
         // Read decorators for all Cards
         decorators = new List<Decorator>(); // Init the list of Decorators
@@ -154,10 +151,10 @@ public class Deck : MonoBehaviour {
         // cardNames will be the names of cards to build
         // Each suit goes from 1 to 14 (e.g., C1 to C14 for Clubs)
         cardNames = new List<string>();
-        string[] letters = new string[] { "C", "D", "H", "S" };
+        string[] letters = new string[] { "R", "G", "W", "B", "Y" };
         foreach (string s in letters)
         {
-            for (int i=0; i<13; i++)
+            for (int i=0; i<10; i++)
             {
                 cardNames.Add(s + (i + 1));
             }
@@ -189,10 +186,30 @@ public class Deck : MonoBehaviour {
         card.name = cardNames[cNum];
         card.suit = card.name[0].ToString();
         card.rank = int.Parse(card.name.Substring(1));
-        if(card.suit == "D" || card.suit == "H")
+        if(card.suit == "R")
         {
             card.colS = "Red";
             card.color = Color.red;
+        }
+        else if(card.suit == "G")
+        {
+            card.colS = "Green";
+            card.color = Color.green;
+        }
+        else if (card.suit == "W")
+        {
+            card.colS = "White";
+            card.color = Color.white;
+        }
+        else if (card.suit == "B")
+        {
+            card.colS = "Blue";
+            card.color = Color.blue;
+        }
+        else if (card.suit == "Y")
+        {
+            card.colS = "Yellow";
+            card.color = Color.yellow;
         }
         // Pull the CardDefinition for this card
         card.def = GetCardDefinitionByRank(card.rank);

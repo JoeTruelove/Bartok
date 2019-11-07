@@ -12,7 +12,8 @@ public enum TurnPhase
     gameOver
 }
 
-public class Bartok : MonoBehaviour {
+public class Bartok : MonoBehaviour
+{
     static public Bartok S;
     static public Player CURRENT_PLAYER;
 
@@ -56,7 +57,7 @@ public class Bartok : MonoBehaviour {
     List<CardBartok> UpgradeCardsList(List<Card> lCD)
     {
         List<CardBartok> lCB = new List<CardBartok>();
-        foreach(Card tCD in lCD)
+        foreach (Card tCD in lCD)
         {
             lCB.Add(tCD as CardBartok);
         }
@@ -68,7 +69,7 @@ public class Bartok : MonoBehaviour {
     {
         CardBartok tCB;
 
-        for (int i=0; i<drawPile.Count; i++)
+        for (int i = 0; i < drawPile.Count; i++)
         {
             tCB = drawPile[i];
             tCB.transform.SetParent(layoutAnchor);
@@ -85,7 +86,7 @@ public class Bartok : MonoBehaviour {
     void LayoutGame()
     {
         // Create an empty GameObject to serve as the tableau's anchor
-        if(layoutAnchor == null)
+        if (layoutAnchor == null)
         {
             GameObject tGO = new GameObject("_LayoutAnchor");
             layoutAnchor = tGO.transform;
@@ -109,15 +110,15 @@ public class Bartok : MonoBehaviour {
 
         CardBartok tCB;
         // Deal seven cards to each player
-        for (int i=0; i<numStartingCards; i++)
+        for (int i = 0; i < numStartingCards; i++)
         {
-            for (int j=0; j<4; j++)
+            for (int j = 0; j < 2; j++)
             {
                 tCB = Draw(); // Draw a card
                 // Stagger the draw time a bit.
                 tCB.timeStart = Time.time + drawTimeStagger * (i * 4 + j);
 
-                players[(j + 1) % 4].AddCard(tCB);
+                players[j].AddCard(tCB);
             }
         }
 
@@ -152,10 +153,10 @@ public class Bartok : MonoBehaviour {
         if (num == -1)
         {
             int ndx = players.IndexOf(CURRENT_PLAYER);
-            num = (ndx + 1) % 4;
+            num = (ndx - 1);
         }
         int lastPlayerNum = -1;
-        if(CURRENT_PLAYER != null)
+        if (CURRENT_PLAYER != null)
         {
             lastPlayerNum = CURRENT_PLAYER.playerNum;
             // Check for Game Over and need to reshuffle discards
@@ -176,7 +177,7 @@ public class Bartok : MonoBehaviour {
     public bool CheckGameOver()
     {
         // See if we need to reshuffle the discard pile into the draw pile
-        if(drawPile.Count == 0)
+        if (drawPile.Count == 0)
         {
             List<Card> cards = new List<Card>();
             foreach (CardBartok cb in discardPile)
@@ -188,9 +189,9 @@ public class Bartok : MonoBehaviour {
             drawPile = UpgradeCardsList(cards);
             ArrangeDrawPile();
         }
-        
+
         // Check to see if the current player has won
-        if(CURRENT_PLAYER.hand.Count == 0)
+        if (CURRENT_PLAYER.hand.Count == 0)
         {
             // The player that just played has won!
             phase = TurnPhase.gameOver;
@@ -213,7 +214,7 @@ public class Bartok : MonoBehaviour {
         if (cb.rank == targetCard.rank) return (true);
 
         // It's a valid play if the suit is the same
-        if(cb.suit == targetCard.suit)
+        if (cb.suit == targetCard.suit)
         {
             return (true);
         }
@@ -232,7 +233,7 @@ public class Bartok : MonoBehaviour {
 
         tCB.SetSortingLayerName("10");
         tCB.eventualSortLayer = layout.target.layerName;
-        if(targetCard != null)
+        if (targetCard != null)
         {
             MoveToDiscard(targetCard);
         }
@@ -258,12 +259,12 @@ public class Bartok : MonoBehaviour {
     {
         CardBartok cd = drawPile[0]; // Pull the 0th CardBartok
 
-        if(drawPile.Count == 0)
+        if (drawPile.Count == 0)
         {
             // If the drawPile is now empty
             // We need to shuffle the discards into the drawPile
             int ndx;
-            while(discardPile.Count > 0)
+            while (discardPile.Count > 0)
             {
                 // Pull a random card from the discard pile
                 ndx = Random.Range(0, discardPile.Count);
