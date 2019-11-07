@@ -153,7 +153,7 @@ public class Bartok : MonoBehaviour
         if (num == -1)
         {
             int ndx = players.IndexOf(CURRENT_PLAYER);
-            num = (ndx - 1);
+            num = (ndx + 1) % 2;
         }
         int lastPlayerNum = -1;
         if (CURRENT_PLAYER != null)
